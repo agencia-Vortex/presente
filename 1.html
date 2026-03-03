@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para o Meu Amor</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --cor-principal: #ff4d6d;
+            --cor-secundaria: #ff758f;
+            --texto: #ffffff;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background-color: var(--cor-principal);
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Botão de Entrada */
+        #botaoEntrada {
+            padding: 20px 50px;
+            font-size: 1.8rem;
+            font-family: 'Dancing Script', cursive;
+            background: white;
+            color: var(--cor-principal);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            z-index: 100;
+        }
+        #botaoEntrada:hover { transform: scale(1.1); }
+
+        /* Conteúdo Surpresa */
+        #surpresa {
+            display: none;
+            text-align: center;
+            color: var(--texto);
+            max-width: 90%;
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; margin: 0; }
+
+        /* Contador */
+        .contador-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 25px 0;
+        }
+        .bloco {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            min-width: 65px;
+            backdrop-filter: blur(5px);
+        }
+        .bloco span { display: block; font-size: 1.5rem; font-weight: bold; }
+
+        /* Área das Mensagens */
+        .caixa-mensagens {
+            background: white;
+            color: var(--cor-principal);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        #textoMensagem { font-size: 1.1rem; font-weight: 600; min-height: 50px; margin-bottom: 20px; }
+
+        .btn-proximo {
+            background: var(--cor-principal);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-proximo:hover { background: var(--cor-secundaria); }
+
+        /* Corações */
+        .coracao {
+            position: absolute; top: -20px; pointer-events: none;
+            animation: cair linear forwards;
+        }
+        @keyframes cair { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <button id="botaoEntrada" onclick="iniciar()">Clica aqui, Amor 🖕</button>
+
+    <div id="surpresa">
+        <h1>A nossa história</h1>
+        <p>Estamos juntos há exatamente:</p>
+
+        <div class="contador-container">
+            <div class="bloco"><span id="dias">0</span>dias</div>
+            <div class="bloco"><span id="horas">0</span>h</div>
+            <div class="bloco"><span id="minutos">0</span>m</div>
+            <div class="bloco"><span id="segundos">0</span>s</div>
+        </div>
+
+        <div class="caixa-mensagens">
+            <div id="textoMensagem">Clica abaixo para veres o quanto te amo...</div>
+            <button class="btn-proximo" onclick="novaFrase()">Ver uma razão 🖕</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. AJUSTA A DATA AQUI (Ano, Mês-1, Dia)
+        const dataInicio = new Date(2023, 0, 1); 
+
+        // 2. ADICIONA AS TUAS FRASES AQUI
+        const frases = [
+            "Amo a forma como sorris para mim.",
+            "És o meu porto seguro em todos os dias.",
+            "Adoro as nossas conversas até tarde.",
+            "Obrigado por seres a minha melhor amiga.",
+            "És a pessoa mais incrível que já conheci!",
+            "Mal posso esperar pelo nosso futuro juntos."
+        ];
+
+        function iniciar() {
+            document.getElementById('botaoEntrada').style.display = 'none';
+            document.getElementById('surpresa').style.display = 'block';
+            document.body.style.overflow = 'auto';
+            
+            atualizarRelogio();
+            setInterval(atualizarRelogio, 1000);
+            setInterval(criarCoracao, 400);
+        }
+
+        function atualizarRelogio() {
+            const agora = new Date();
+            const diff = agora - dataInicio;
+            document.getElementById("dias").innerText = Math.floor(diff / 86400000);
+            document.getElementById("horas").innerText = Math.floor((diff / 3600000) % 24);
+            document.getElementById("minutos").innerText = Math.floor((diff / 60000) % 60);
+            document.getElementById("segundos").innerText = Math.floor((diff / 1000) % 60);
+        }
+
+        function novaFrase() {
+            const el = document.getElementById("textoMensagem");
+            const random = Math.floor(Math.random() * frases.length);
+            el.style.opacity = 0;
+            setTimeout(() => {
+                el.innerText = frases[random];
+                el.style.opacity = 1;
+            }, 200);
+        }
+
+        function criarCoracao() {
+            const c = document.createElement('div');
+            c.className = 'coracao';
+            c.innerHTML = '🖕';
+            c.style.left = Math.random() * 100 + 'vw';
+            c.style.fontSize = Math.random() * 20 + 15 + 'px';
+            c.style.animationDuration = Math.random() * 3 + 2 + 's';
+            c.style.opacity = Math.random();
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
